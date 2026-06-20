@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Botcake Copy Flow</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="page-title">
+        <h1>
+          <img src="icon.png" />
+          <span>Botcake Copy Flow</span>
+        </h1>
+      </div>
+      <div class="container">
+        <div class="form-grid">
+          <div class="left-column">
+            <div class="form-group">
+              <label class="form-label">原始专页ID</label>
+              <input type="text" class="form-input" id="orig-page-id" placeholder="输入ID" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">复制流程专页ID</label>
+              <textarea class="form-textarea" id="target-page-id" placeholder="输入 ID，一行一个"></textarea>
+            </div>
+            <button class="copy-button" id="copy-flow-button">复制流程</button>
+          </div>
+          <div class="right-column">
+            <div class="form-group">
+              <label class="form-label">原始专页访问令牌</label>
+              <input type="text" class="form-input" id="orig-token" placeholder="输入访问令牌" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">日志</label>
+              <textarea class="form-textarea-large" id="log" placeholder="日志信息"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid"></div>
+
+        <div class="accordion-wrapper">
+          <input type="checkbox" id="accordion-toggle" class="accordion-checkbox" hidden />
+
+          <label class="accordion-header" for="accordion-toggle">
+            <span>高级设置</span>
+            <span class="accordion-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </label>
+
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label class="switch">
+                    <input type="checkbox" id="switch-close-comments" />
+                    <span class="slider"></span>
+                  </label>
+                  <label class="setting-label" for="switch-close-comments">关闭评论</label>
+                </div>
+
+                <div class="setting-item">
+                  <label class="switch">
+                    <input type="checkbox" id="switch-close-bot" />
+                    <span class="slider"></span>
+                  </label>
+                  <label class="setting-label" for="switch-close-bot">关闭机器人</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
