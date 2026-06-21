@@ -1,0 +1,58 @@
+name: Release Chrome Extension
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get repo name
+        id: repo
+        run: echo "REPO=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Validate manifest exists
+        run: test -f manifest.json
+
+      - name: Inject version into manifest
+        run: |
+          jq '.version="${{ steps.version.outputs.VERSION }}"' manifest.json > manifest.tmp.json
+          mv manifest.tmp.json manifest.json
+
+      - name: Create deterministic package
+        run: |
+          ZIP_NAME="${{ steps.repo.outputs.REPO }}-${{ steps.version.outputs.VERSION }}.zip"
+
+          zip -r "$ZIP_NAME" . \
+            -x "*.git*" \
+            -x "*.github*"
+
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: Generate SLSA attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ env.ZIP_NAME }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: ${{ env.ZIP_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
