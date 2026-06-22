@@ -29,11 +29,6 @@ jobs:
       - name: Validate manifest exists
         run: test -f manifest.json
 
-      - name: Inject version into manifest
-        run: |
-          jq '.version="${{ steps.version.outputs.VERSION }}"' manifest.json > manifest.tmp.json
-          mv manifest.tmp.json manifest.json
-
       - name: Create deterministic package
         run: |
           ZIP_NAME="${{ steps.repo.outputs.REPO }}-${{ steps.version.outputs.VERSION }}.zip"
