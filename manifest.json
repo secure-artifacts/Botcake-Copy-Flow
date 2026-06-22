@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Botcake Copy Flow",
   "author": "Raz1ner",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Botcake 批量复制流程。",
   "action": {
     "default_icon": "icon.png"
