@@ -37,30 +37,53 @@ const log = text => {
 function deepReplaceText (obj, targetText, replaceText) {
   // 如果是数组
   if (Array.isArray(obj)) {
-    return obj.map(item => deepReplaceText(item, targetText, replaceText))
+    obj.forEach(item => deepReplaceText(item, targetText, replaceText))
+    return obj
   }
 
   // 如果是对象
-  if (typeof obj === 'object' && obj !== null) {
-    const newObj = {}
+  if (obj && typeof obj === 'object') {
     for (const key in obj) {
-      if (Object.hasOwn(obj, key)) {
-        newObj[key] = deepReplaceText(obj[key], targetText, replaceText)
-      }
+      obj[key] = deepReplaceText(obj[key], targetText, replaceText)
     }
-    return newObj
+    return obj
   }
 
   // 如果是字符串，替换文本
   if (typeof obj === 'string') {
-    return String(obj) === String(targetText) ? replaceText : obj
-    // return obj === targetText ? replaceText : obj
-    // return obj.includes(targetText) ? obj.replaceAll(targetText, replaceText) : obj
+    return obj.replaceAll(targetText, replaceText)
   }
 
-  // 其它类型不变
   return obj
 }
+
+// function deepReplaceText (obj, targetText, replaceText) {
+//   // 如果是数组
+//   if (Array.isArray(obj)) {
+//     return obj.map(item => deepReplaceText(item, targetText, replaceText))
+//   }
+
+//   // 如果是对象
+//   if (typeof obj === 'object' && obj !== null) {
+//     const newObj = {}
+//     for (const key in obj) {
+//       if (Object.hasOwn(obj, key)) {
+//         newObj[key] = deepReplaceText(obj[key], targetText, replaceText)
+//       }
+//     }
+//     return newObj
+//   }
+
+//   // 如果是字符串，替换文本
+//   if (typeof obj === 'string') {
+//     return String(obj) === String(targetText) ? replaceText : obj
+//     // return obj === targetText ? replaceText : obj
+//     // return obj.includes(targetText) ? obj.replaceAll(targetText, replaceText) : obj
+//   }
+
+//   // 其它类型不变
+//   return obj
+// }
 
 // 验证基本信息是否填写规范
 async function verify () {
@@ -320,27 +343,7 @@ async function acceptInviteLink (inviteId) {
  */
 async function copyFlow (targetPageId) {
   const body = new FormData()
-  body.append(
-    'checked_list_clone',
-    JSON.stringify([
-      'welcome_message',
-      'default_reply',
-      'main_menu',
-      'asked_question',
-      'tag',
-      'custom_field',
-      'bot_field',
-      'topic',
-      'growth_tools',
-      'broadcasts',
-      'sequences',
-      'keywords',
-      'flow',
-      'auto_cmt',
-      'lucky_wheel',
-      'product_source_botcake'
-    ])
-  )
+  body.append('checked_list_clone', JSON.stringify(['welcome_message', 'default_reply', 'main_menu', 'asked_question', 'tag', 'custom_field', 'bot_field', 'topic', 'growth_tools', 'broadcasts', 'sequences', 'keywords', 'flow', 'auto_cmt', 'lucky_wheel', 'product_source_botcake']))
   body.append('page_id_clones', JSON.stringify([targetPageId]))
   const json = await fetch(`https://botcake.io/api/v1/pages/${origPageId.value}/clone?access_token=${token.user}`, {
     body,
@@ -356,27 +359,7 @@ async function copyFlow (targetPageId) {
  */
 async function copyFlow_debug (targetPageId) {
   const body = new FormData()
-  body.append(
-    'checked_list_clone',
-    JSON.stringify([
-      'welcome_message',
-      'default_reply',
-      'main_menu',
-      'asked_question',
-      'tag',
-      'custom_field',
-      'bot_field',
-      'topic',
-      'growth_tools',
-      'broadcasts',
-      'sequences',
-      'keywords',
-      'flow',
-      'auto_cmt',
-      'lucky_wheel',
-      'product_source_botcake'
-    ])
-  )
+  body.append('checked_list_clone', JSON.stringify(['welcome_message', 'default_reply', 'main_menu', 'asked_question', 'tag', 'custom_field', 'bot_field', 'topic', 'growth_tools', 'broadcasts', 'sequences', 'keywords', 'flow', 'auto_cmt', 'lucky_wheel', 'product_source_botcake']))
   body.append('page_id_clones', JSON.stringify([targetPageId]))
   const json = await fetch(`https://botcake.io/api/v1/pages/${origPageId.value}/copy_flow_to_page?access_token=${token.user}`, {
     body,
@@ -771,4 +754,3 @@ async function getTagIds (pageId) {
   }).then(response => response.json())
   return json
 }
-
